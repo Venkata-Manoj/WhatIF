@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { analyzePrompt } from '@/ai/flows/prompt-analyzer';
+import { Navbar } from '@/components/Navbar';
 
 const playgroundFormSchema = z.object({
   promptText: z.string().min(10, {
@@ -54,85 +55,88 @@ export default function PlaygroundPage() {
   }
 
   return (
-    <div className="container py-10">
-      <div className="space-y-2 text-center mb-10">
-        <h1 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline">Prompt Playground</h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Test your prompts and get instant, AI-powered feedback to improve them.
-        </p>
-      </div>
+    <>
+      <Navbar />
+      <div className="container py-10">
+        <div className="space-y-2 text-center mb-10">
+          <h1 className="text-3xl font-bold tracking-tight sm:text-4xl font-headline">Prompt Playground</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            Test your prompts and get instant, AI-powered feedback to improve them.
+          </p>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
-        <Card>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)}>
-              <CardHeader>
-                <CardTitle>Your Prompt</CardTitle>
-                <CardDescription>Enter the prompt you want to analyze.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormField
-                  control={form.control}
-                  name="promptText"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="sr-only">Prompt</FormLabel>
-                      <FormControl>
-                        <Textarea
-                          placeholder="e.g., Explain the theory of relativity to a 5-year-old."
-                          className="min-h-[200px] resize-none"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </CardContent>
-              <CardFooter>
-                <Button type="submit" disabled={isLoading} size="lg">
-                  {isLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                      Analyzing...
-                    </>
-                  ) : (
-                    <>
-                      <Sparkles className="mr-2 h-4 w-4" />
-                      Analyze Prompt
-                    </>
-                  )}
-                </Button>
-              </CardFooter>
-            </form>
-          </Form>
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+          <Card>
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)}>
+                <CardHeader>
+                  <CardTitle>Your Prompt</CardTitle>
+                  <CardDescription>Enter the prompt you want to analyze.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <FormField
+                    control={form.control}
+                    name="promptText"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel className="sr-only">Prompt</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder="e.g., Explain the theory of relativity to a 5-year-old."
+                            className="min-h-[200px] resize-none"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </CardContent>
+                <CardFooter>
+                  <Button type="submit" disabled={isLoading} size="lg">
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Analyzing...
+                      </>
+                    ) : (
+                      <>
+                        <Sparkles className="mr-2 h-4 w-4" />
+                        Analyze Prompt
+                      </>
+                    )}
+                  </Button>
+                </CardFooter>
+              </form>
+            </Form>
+          </Card>
 
-        <Card className="flex flex-col min-h-[440px]">
-          <CardHeader>
-            <CardTitle>AI Analysis</CardTitle>
-            <CardDescription>Here are the suggestions to improve your prompt.</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 flex items-center justify-center text-sm">
-            {isLoading && (
-              <div className="flex flex-col items-center justify-center h-full gap-2">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                <span className="text-muted-foreground">AI is thinking...</span>
-              </div>
-            )}
-            {analysis && !isLoading && (
-              <div className="prose prose-sm max-w-none text-foreground whitespace-pre-wrap font-sans self-start w-full">
-                {analysis}
-              </div>
-            )}
-            {!analysis && !isLoading && (
-              <div className="text-center text-muted-foreground">
-                <p>Your analysis will appear here.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+          <Card className="flex flex-col min-h-[440px]">
+            <CardHeader>
+              <CardTitle>AI Analysis</CardTitle>
+              <CardDescription>Here are the suggestions to improve your prompt.</CardDescription>
+            </CardHeader>
+            <CardContent className="flex-1 flex items-center justify-center text-sm">
+              {isLoading && (
+                <div className="flex flex-col items-center justify-center h-full gap-2">
+                  <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                  <span className="text-muted-foreground">AI is thinking...</span>
+                </div>
+              )}
+              {analysis && !isLoading && (
+                <div className="prose prose-sm max-w-none text-foreground whitespace-pre-wrap font-sans self-start w-full">
+                  {analysis}
+                </div>
+              )}
+              {!analysis && !isLoading && (
+                <div className="text-center text-muted-foreground">
+                  <p>Your analysis will appear here.</p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

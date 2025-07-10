@@ -10,6 +10,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { Navbar } from '@/components/Navbar';
 
 type Question = {
   question: string;
@@ -36,7 +37,7 @@ export default function QuizPage() {
       const randomTopic = allTopics[Math.floor(Math.random() * allTopics.length)];
       const result = await generateQuizQuestion({
         topicTitle: randomTopic.title,
-        topicContent: randomTopic.content,
+        topicContent: randomTopic.definition,
       });
       // Shuffle options
       const shuffledOptions = [...result.options].sort(() => Math.random() - 0.5);
@@ -55,6 +56,7 @@ export default function QuizPage() {
 
   useEffect(() => {
     fetchQuestion();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleAnswerSubmit = () => {
@@ -71,68 +73,71 @@ export default function QuizPage() {
   };
 
   return (
-    <div className="container flex items-center justify-center py-12 md:py-20">
-      <Card className="w-full max-w-2xl shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-2xl font-headline text-center">Prompt Engineering Quiz</CardTitle>
-          <CardDescription className="text-center">Test your knowledge with a random question.</CardDescription>
-        </CardHeader>
-        <CardContent className="min-h-[300px] flex flex-col justify-center">
-          {isLoading && (
-            <div className="flex flex-col items-center justify-center gap-4 text-muted-foreground">
-              <Loader2 className="h-12 w-12 animate-spin" />
-              <p>Generating a fresh question for you...</p>
-            </div>
-          )}
-          {!isLoading && question && (
-            <div className="space-y-6">
-              <p className="text-lg font-semibold text-center">{question.question}</p>
-              <RadioGroup
-                value={selectedAnswer ?? ''}
-                onValueChange={setSelectedAnswer}
-                className="space-y-3"
-                disabled={isAnswered}
-              >
-                {question.options.map((option, index) => (
-                  <Label
-                    key={index}
-                    htmlFor={`option-${index}`}
-                    className={cn(
-                      'flex items-center space-x-3 border rounded-md p-4 transition-all',
-                      'cursor-pointer hover:bg-muted/50',
-                       getOptionClass(option)
-                    )}
-                  >
-                    <RadioGroupItem value={option} id={`option-${index}`} />
-                    <span>{option}</span>
-                  </Label>
-                ))}
-              </RadioGroup>
-              {isAnswered && selectedAnswer && (
-                 <div className={cn("mt-4 text-center font-medium p-3 rounded-md", 
-                  selectedAnswer === question.correctAnswer ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                 )}>
-                    {selectedAnswer === question.correctAnswer
-                      ? "Correct! Well done."
-                      : `Not quite. The correct answer is: ${question.correctAnswer}`}
-                  </div>
-              )}
-            </div>
-          )}
-        </CardContent>
-        <CardContent className="flex justify-center">
-          {isAnswered ? (
-            <Button onClick={fetchQuestion} size="lg">
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Next Question
-            </Button>
-          ) : (
-            <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isLoading} size="lg">
-              Submit Answer
-            </Button>
-          )}
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      <Navbar />
+      <div className="container flex items-center justify-center py-12 md:py-20">
+        <Card className="w-full max-w-2xl shadow-lg">
+          <CardHeader>
+            <CardTitle className="text-2xl font-headline text-center">Prompt Engineering Quiz</CardTitle>
+            <CardDescription className="text-center">Test your knowledge with a random question.</CardDescription>
+          </CardHeader>
+          <CardContent className="min-h-[300px] flex flex-col justify-center">
+            {isLoading && (
+              <div className="flex flex-col items-center justify-center gap-4 text-muted-foreground">
+                <Loader2 className="h-12 w-12 animate-spin" />
+                <p>Generating a fresh question for you...</p>
+              </div>
+            )}
+            {!isLoading && question && (
+              <div className="space-y-6">
+                <p className="text-lg font-semibold text-center">{question.question}</p>
+                <RadioGroup
+                  value={selectedAnswer ?? ''}
+                  onValueChange={setSelectedAnswer}
+                  className="space-y-3"
+                  disabled={isAnswered}
+                >
+                  {question.options.map((option, index) => (
+                    <Label
+                      key={index}
+                      htmlFor={`option-${index}`}
+                      className={cn(
+                        'flex items-center space-x-3 border rounded-md p-4 transition-all',
+                        'cursor-pointer hover:bg-muted/50',
+                        getOptionClass(option)
+                      )}
+                    >
+                      <RadioGroupItem value={option} id={`option-${index}`} />
+                      <span>{option}</span>
+                    </Label>
+                  ))}
+                </RadioGroup>
+                {isAnswered && selectedAnswer && (
+                  <div className={cn("mt-4 text-center font-medium p-3 rounded-md", 
+                    selectedAnswer === question.correctAnswer ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                  )}>
+                      {selectedAnswer === question.correctAnswer
+                        ? "Correct! Well done."
+                        : `Not quite. The correct answer is: ${question.correctAnswer}`}
+                    </div>
+                )}
+              </div>
+            )}
+          </CardContent>
+          <CardContent className="flex justify-center">
+            {isAnswered ? (
+              <Button onClick={fetchQuestion} size="lg">
+                <RefreshCw className="mr-2 h-4 w-4" />
+                Next Question
+              </Button>
+            ) : (
+              <Button onClick={handleAnswerSubmit} disabled={!selectedAnswer || isLoading} size="lg">
+                Submit Answer
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+    </>
   );
 }
