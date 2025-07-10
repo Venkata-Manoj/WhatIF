@@ -6,13 +6,19 @@ import { usePathname } from 'next/navigation';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const levels = [
-  { name: 'Beginner', path: '/learn/beginner' },
-  { name: 'Intermediate', path: '/learn/intermediate' },
-  { name: 'Professional', path: '/learn/professional' },
+  { name: '🔰 Beginner', path: '/learn/beginner' },
+  { name: '⚙️ Intermediate', path: '/learn/intermediate' },
+  { name: '🧠 Professional', path: '/learn/professional' },
 ];
 
 export default function LearnLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+
+  const getCurrentLevel = () => {
+    if (pathname.startsWith('/learn/intermediate')) return '/learn/intermediate';
+    if (pathname.startsWith('/learn/professional')) return '/learn/professional';
+    return '/learn/beginner';
+  }
 
   return (
     <div className="container py-10">
@@ -23,8 +29,8 @@ export default function LearnLayout({ children }: { children: React.ReactNode })
         </p>
       </div>
 
-      <Tabs value={pathname} className="w-full flex justify-center mb-8">
-        <TabsList className="grid w-full max-w-md grid-cols-3">
+      <Tabs value={getCurrentLevel()} className="w-full flex justify-center mb-8">
+        <TabsList className="grid w-full max-w-lg grid-cols-3">
           {levels.map((level) => (
             <TabsTrigger key={level.path} value={level.path} asChild>
               <Link href={level.path}>{level.name}</Link>

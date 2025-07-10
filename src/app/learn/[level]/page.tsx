@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import { learningContent, Topic } from '@/data/prompts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
 
 type LevelPageProps = {
@@ -21,7 +22,7 @@ export async function generateMetadata({ params }: LevelPageProps) {
     return { title: 'Not Found' };
   }
   return {
-    title: `${levelData.title} Level | PromptVibes`,
+    title: `${levelData.title} | PromptVibes`,
     description: levelData.description,
   };
 }
@@ -36,26 +37,50 @@ export default function LevelPage({ params }: LevelPageProps) {
 
   return (
     <div>
-      <div className="flex flex-wrap items-center gap-4 mb-8">
-         <h2 className="font-headline text-2xl">{levelData.title} Topics</h2>
-         <Badge variant="secondary" className="text-base">{levelData.topics.length} topics</Badge>
+      <div className="flex flex-col items-start gap-2 mb-8">
+        <h2 className="font-headline text-2xl font-bold">{levelData.level}</h2>
+        <div className="flex items-center gap-4">
+          <h3 className="text-xl text-muted-foreground">{levelData.title}</h3>
+          <Badge variant="secondary" className="text-sm">{levelData.topics.length} topics</Badge>
+        </div>
+        <p className="text-md text-muted-foreground">{levelData.description}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {levelData.topics.map((topic: Topic, index: number) => (
-            <Card key={index} className="flex flex-col">
-              <CardHeader>
-                <CardTitle className="text-xl font-medium">{topic.title}</CardTitle>
-                <CardDescription>{topic.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1">
-                <div className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
-                  {topic.content}
+      <Accordion type="single" collapsible className="w-full space-y-4">
+        {levelData.topics.map((topic, index) => (
+          <AccordionItem key={index} value={`item-${index}`} className="border-b-0">
+            <Card className="overflow-hidden">
+              <AccordionTrigger className="p-6 text-left hover:no-underline">
+                <div className="flex-1">
+                  <h4 className="font-headline text-xl font-semibold">{topic.title}</h4>
                 </div>
-              </CardContent>
+              </AccordionTrigger>
+              <AccordionContent className="px-6 pb-6">
+                <div className="space-y-6">
+                  <p className="text-base text-foreground/90 leading-relaxed border-l-4 border-primary pl-4">
+                    {topic.definition}
+                  </p>
+                  <div className="space-y-4">
+                    <h5 className="font-semibold text-lg">Real-world Examples:</h5>
+                    {topic.examples.map((example, exIndex) => (
+                      <Card key={exIndex} className="bg-muted/50">
+                        <CardHeader className="pb-2">
+                          <CardTitle className="text-base font-medium">{example.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-sm text-muted-foreground font-mono bg-background/50 p-3 rounded-md">
+                            {example.text}
+                          </p>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              </AccordionContent>
             </Card>
-          ))}
-      </div>
+          </AccordionItem>
+        ))}
+      </Accordion>
     </div>
   );
 }
