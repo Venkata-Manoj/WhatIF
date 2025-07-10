@@ -68,7 +68,7 @@ export default function Home() {
             <div className="mx-auto grid max-w-5xl items-start gap-8 sm:grid-cols-3 md:grid-cols-3 lg:gap-12 mt-12">
               <Card className="text-center flex flex-col items-center">
                 <CardHeader>
-                  <div className="rounded-full bg-primary/10 p-4">
+                  <div className="rounded-full bg-primary/10 p-3">
                     <BookOpen className="h-8 w-8 text-primary" />
                   </div>
                   <CardTitle className="font-headline text-xl pt-2">Interactive Roadmap</CardTitle>
@@ -79,7 +79,7 @@ export default function Home() {
               </Card>
               <Card className="text-center flex flex-col items-center">
                 <CardHeader>
-                   <div className="rounded-full bg-primary/10 p-4">
+                   <div className="rounded-full bg-primary/10 p-3">
                     <Sparkles className="h-8 w-8 text-primary" />
                   </div>
                   <CardTitle className="font-headline text-xl pt-2">AI Playground</CardTitle>
@@ -90,7 +90,7 @@ export default function Home() {
               </Card>
                <Card className="text-center flex flex-col items-center">
                 <CardHeader>
-                   <div className="rounded-full bg-primary/10 p-4">
+                   <div className="rounded-full bg-primary/10 p-3">
                     <Bot className="h-8 w-8 text-primary" />
                   </div>
                   <CardTitle className="font-headline text-xl pt-2">Knowledge Quiz</CardTitle>
