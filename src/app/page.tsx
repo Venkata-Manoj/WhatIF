@@ -23,7 +23,7 @@ export default function Home() {
                 Master Prompt Engineering
               </h1>
               <p className="max-w-[700px] mx-auto text-muted-foreground md:text-xl">
-                This is a website that is useful to learn the basics and intermediate level content of prompt engineering by your self and also had the features of prompt improvising and test your prompt skills in the playground section and test your knowledge in the quiz section with random questions each time you refresh.
+                Unlock your potential with our all-in-one platform. Learn prompt engineering from the ground up, sharpen your skills in our AI-powered playground, and test your knowledge with dynamic quizzes.
               </p>
             </div>
             <div className="flex flex-col gap-4 min-[500px]:flex-row justify-center">
