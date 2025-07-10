@@ -1,8 +1,13 @@
+'use client';
+
+import { useState } from 'react';
 import { notFound } from 'next/navigation';
-import { learningContent, Topic } from '@/data/prompts';
+import { learningContent } from '@/data/prompts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 type LevelPageProps = {
   params: {
@@ -10,30 +15,21 @@ type LevelPageProps = {
   };
 };
 
-export async function generateStaticParams() {
-  return Object.keys(learningContent).map((level) => ({
-    level,
-  }));
-}
-
-export async function generateMetadata({ params }: LevelPageProps) {
-  const levelData = learningContent[params.level];
-  if (!levelData) {
-    return { title: 'Not Found' };
-  }
-  return {
-    title: `${levelData.title} | PromptVibes`,
-    description: levelData.description,
-  };
-}
-
 export default function LevelPage({ params }: LevelPageProps) {
   const { level } = params;
   const levelData = learningContent[level];
+  const [openItem, setOpenItem] = useState<string | undefined>('item-0');
 
   if (!levelData) {
     notFound();
   }
+
+  const handleNextTopic = (currentIndex: number) => {
+    const nextIndex = currentIndex + 1;
+    if (nextIndex < levelData.topics.length) {
+      setOpenItem(`item-${nextIndex}`);
+    }
+  };
 
   return (
     <div>
@@ -41,12 +37,20 @@ export default function LevelPage({ params }: LevelPageProps) {
         <h2 className="font-headline text-2xl font-bold">{levelData.level}</h2>
         <div className="flex items-center gap-4">
           <h3 className="text-xl text-muted-foreground">{levelData.title}</h3>
-          <Badge variant="secondary" className="text-sm">{levelData.topics.length} topics</Badge>
+          <Badge variant="secondary" className="text-sm">
+            {levelData.topics.length} topics
+          </Badge>
         </div>
         <p className="text-md text-muted-foreground">{levelData.description}</p>
       </div>
 
-      <Accordion type="single" collapsible className="w-full space-y-4">
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full space-y-4"
+        value={openItem}
+        onValueChange={setOpenItem}
+      >
         {levelData.topics.map((topic, index) => (
           <AccordionItem key={index} value={`item-${index}`} className="border-b-0">
             <Card className="overflow-hidden">
@@ -75,6 +79,14 @@ export default function LevelPage({ params }: LevelPageProps) {
                       </Card>
                     ))}
                   </div>
+
+                  {index < levelData.topics.length - 1 && (
+                    <div className="flex justify-end pt-4">
+                      <Button onClick={() => handleNextTopic(index)}>
+                        Next Topic <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </AccordionContent>
             </Card>
