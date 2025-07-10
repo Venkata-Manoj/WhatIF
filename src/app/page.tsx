@@ -4,6 +4,7 @@ import { BookOpen, Bot, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { VibeLearnAILogo } from '@/components/Logo';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 export default function Home() {
   return (
@@ -11,8 +12,11 @@ export default function Home() {
       <header className="absolute top-0 z-50 w-full h-14 flex items-center px-4 md:px-6">
         <Link href="/" className="flex items-center space-x-2">
             <VibeLearnAILogo className="h-6 w-6" />
-            <span className="font-bold sm:inline-block font-headline">Vibe Learn AI</span>
+            <span className="font-bold sm:inline-block">Vibe Learn AI</span>
         </Link>
+        <div className="ml-auto">
+          <ThemeToggle />
+        </div>
       </header>
 
       <main>
