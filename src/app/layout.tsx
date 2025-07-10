@@ -1,11 +1,10 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
-import { Navbar } from '@/components/Navbar';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'PromptVibes - Master Prompt Engineering',
+  title: 'Vibe Learn AI - Master Prompt Engineering',
   description: 'An interactive platform to learn and master the art of prompt engineering.',
   icons: {
     icon: '/favicon.ico',

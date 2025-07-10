@@ -3,15 +3,15 @@ import Image from 'next/image';
 import { BookOpen, Bot, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BrainCircuit } from 'lucide-react';
+import { VibeLearnAILogo } from '@/components/Logo';
 
 export default function Home() {
   return (
     <>
       <header className="absolute top-0 z-50 w-full h-14 flex items-center px-4 md:px-6">
         <Link href="/" className="flex items-center space-x-2">
-            <BrainCircuit className="h-6 w-6 text-primary" />
-            <span className="font-bold sm:inline-block font-headline">PromptVibes</span>
+            <VibeLearnAILogo className="h-6 w-6" />
+            <span className="font-bold sm:inline-block font-headline">Vibe Learn AI</span>
         </Link>
       </header>
 
@@ -54,7 +54,7 @@ export default function Home() {
           <div className="container px-4 md:px-6">
              <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
                 <div className="space-y-4">
-                    <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Why PromptVibes?</div>
+                    <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Why Vibe Learn AI?</div>
                     <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Everything You Need to Succeed</h2>
                     <p className="max-w-[600px] text-muted-foreground md:text-lg">
                         Our platform is packed with features designed to take you from prompt novice to expert, providing structured learning paths, hands-on practice, and AI-powered feedback.

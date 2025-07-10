@@ -2,8 +2,8 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { BrainCircuit, Menu } from 'lucide-react';
-
+import { Menu } from 'lucide-react';
+import { VibeLearnAILogo } from '@/components/Logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger, SheetClose } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
@@ -35,8 +35,8 @@ export function Navbar() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <BrainCircuit className="h-6 w-6 text-primary" />
-            <span className="font-bold sm:inline-block font-headline">PromptVibes</span>
+            <VibeLearnAILogo className="h-6 w-6" />
+            <span className="font-bold sm:inline-block font-headline">Vibe Learn AI</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navLinks.map((link) => (
@@ -47,8 +47,8 @@ export function Navbar() {
         
         <div className="flex w-full items-center justify-between md:hidden">
             <Link href="/" className="flex items-center space-x-2">
-                <BrainCircuit className="h-6 w-6 text-primary" />
-                <span className="font-bold font-headline">PromptVibes</span>
+                <VibeLearnAILogo className="h-6 w-6" />
+                <span className="font-bold font-headline">Vibe Learn AI</span>
             </Link>
             <Sheet>
               <SheetTrigger asChild>
@@ -61,8 +61,8 @@ export function Navbar() {
                 <nav className="flex flex-col gap-6 mt-8">
                   <SheetClose asChild>
                     <Link href="/" className="flex items-center space-x-2 mb-4">
-                        <BrainCircuit className="h-6 w-6 text-primary" />
-                        <span className="font-bold text-lg font-headline">PromptVibes</span>
+                        <VibeLearnAILogo className="h-6 w-6" />
+                        <span className="font-bold text-lg font-headline">Vibe Learn AI</span>
                     </Link>
                   </SheetClose>
                   {navLinks.map((link) => (
