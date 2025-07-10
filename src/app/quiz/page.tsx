@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Loader2, RefreshCw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { generateQuizQuestion } from '@/ai/flows/quiz-generator';
 import { learningContent } from '@/data/prompts';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -67,8 +67,8 @@ export default function QuizPage() {
 
   const getOptionClass = (option: string) => {
     if (!isAnswered) return '';
-    if (option === question?.correctAnswer) return 'bg-green-200 border-green-400';
-    if (option === selectedAnswer) return 'bg-red-200 border-red-400';
+    if (option === question?.correctAnswer) return 'border-green-500 bg-green-500/10 text-green-700';
+    if (option === selectedAnswer) return 'border-destructive bg-destructive/10 text-destructive';
     return '';
   };
 
@@ -114,7 +114,7 @@ export default function QuizPage() {
                 </RadioGroup>
                 {isAnswered && selectedAnswer && (
                   <div className={cn("mt-4 text-center font-medium p-3 rounded-md", 
-                    selectedAnswer === question.correctAnswer ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    selectedAnswer === question.correctAnswer ? 'bg-green-500/10 text-green-700' : 'bg-destructive/10 text-destructive'
                   )}>
                       {selectedAnswer === question.correctAnswer
                         ? "Correct! Well done."
@@ -124,7 +124,7 @@ export default function QuizPage() {
               </div>
             )}
           </CardContent>
-          <CardContent className="flex justify-center">
+          <CardFooter className="flex justify-center">
             {isAnswered ? (
               <Button onClick={fetchQuestion} size="lg">
                 <RefreshCw className="mr-2 h-4 w-4" />
@@ -135,7 +135,7 @@ export default function QuizPage() {
                 Submit Answer
               </Button>
             )}
-          </CardContent>
+          </CardFooter>
         </Card>
       </div>
     </>
