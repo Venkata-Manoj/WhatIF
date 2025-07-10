@@ -5,7 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Vibe Learn AI - Master Prompt Engineering',
+  title: 'Vibe Learn - Master Prompt Engineering',
   description: 'An interactive platform to learn and master the art of prompt engineering.',
   icons: {
     icon: '/favicon.ico',
@@ -33,7 +33,7 @@ export default function RootLayout({
           <footer className="py-6 md:px-8 md:py-0 border-t">
             <div className="container flex flex-col items-center justify-center gap-4 md:h-24 md:flex-row">
               <p className="text-balance text-center text-sm text-muted-foreground">
-                © 2024 Vibe Learn AI. All Rights Reserved. Built by{' '}
+                © 2024 Vibe Learn. All Rights Reserved. Built by{' '}
                 <Link
                   href="https://www.linkedin.com/in/venkata-manoj"
                   target="_blank"

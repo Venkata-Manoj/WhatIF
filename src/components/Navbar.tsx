@@ -36,7 +36,7 @@ export function Navbar() {
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
             <VibeLearnAILogo className="h-6 w-6" />
-            <span className="font-bold sm:inline-block font-headline">Vibe Learn AI</span>
+            <span className="font-bold sm:inline-block font-headline">Vibe Learn</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">
             {navLinks.map((link) => (
@@ -48,7 +48,7 @@ export function Navbar() {
         <div className="flex w-full items-center justify-between md:hidden">
             <Link href="/" className="flex items-center space-x-2">
                 <VibeLearnAILogo className="h-6 w-6" />
-                <span className="font-bold font-headline">Vibe Learn AI</span>
+                <span className="font-bold font-headline">Vibe Learn</span>
             </Link>
             <Sheet>
               <SheetTrigger asChild>
@@ -62,7 +62,7 @@ export function Navbar() {
                   <SheetClose asChild>
                     <Link href="/" className="flex items-center space-x-2 mb-4">
                         <VibeLearnAILogo className="h-6 w-6" />
-                        <span className="font-bold text-lg font-headline">Vibe Learn AI</span>
+                        <span className="font-bold text-lg font-headline">Vibe Learn</span>
                     </Link>
                   </SheetClose>
                   {navLinks.map((link) => (

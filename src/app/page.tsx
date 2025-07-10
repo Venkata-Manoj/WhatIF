@@ -12,7 +12,7 @@ export default function Home() {
       <header className="absolute top-0 z-50 w-full h-14 flex items-center px-4 md:px-6">
         <Link href="/" className="flex items-center space-x-2">
             <VibeLearnAILogo className="h-6 w-6" />
-            <span className="font-bold sm:inline-block">Vibe Learn AI</span>
+            <span className="font-bold sm:inline-block">Vibe Learn</span>
         </Link>
         <div className="ml-auto">
           <ThemeToggle />
@@ -25,7 +25,7 @@ export default function Home() {
             <div className="flex flex-col items-center space-y-8 text-center">
               <div className="space-y-4">
                 <h1 className="font-headline text-4xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Master Prompt Engineering with Vibe Learn AI
+                  Master Prompt Engineering with Vibe Learn
                 </h1>
                 <p className="max-w-[700px] mx-auto text-muted-foreground md:text-xl">
                   Unlock your potential with our all-in-one platform. Learn prompt engineering from the ground up, sharpen your skills in our AI-powered playground, and test your knowledge with dynamic quizzes.
