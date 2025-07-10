@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation';
 import { learningContent, Topic } from '@/data/prompts';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
@@ -36,31 +35,27 @@ export default function LevelPage({ params }: LevelPageProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="font-headline text-2xl flex flex-wrap items-center gap-4">
-          <span>{levelData.title} Topics</span>
-          <Badge variant="secondary" className="text-base">{levelData.topics.length} topics</Badge>
-        </CardTitle>
-        <CardDescription>{levelData.description}</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Accordion type="single" collapsible className="w-full">
+    <div>
+      <div className="flex flex-wrap items-center gap-4 mb-8">
+         <h2 className="font-headline text-2xl">{levelData.title} Topics</h2>
+         <Badge variant="secondary" className="text-base">{levelData.topics.length} topics</Badge>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {levelData.topics.map((topic: Topic, index: number) => (
-            <AccordionItem value={`item-${index}`} key={index}>
-              <AccordionTrigger className="text-left hover:no-underline">
-                <span className="text-lg font-medium">{topic.title}</span>
-              </AccordionTrigger>
-              <AccordionContent className="space-y-4 pt-2">
-                <p className="text-base text-muted-foreground">{topic.description}</p>
-                <div className="text-base text-foreground leading-relaxed">
+            <Card key={index} className="flex flex-col">
+              <CardHeader>
+                <CardTitle className="text-xl font-medium">{topic.title}</CardTitle>
+                <CardDescription>{topic.description}</CardDescription>
+              </CardHeader>
+              <CardContent className="flex-1">
+                <div className="text-sm text-foreground/80 leading-relaxed whitespace-pre-wrap">
                   {topic.content}
                 </div>
-              </AccordionContent>
-            </AccordionItem>
+              </CardContent>
+            </Card>
           ))}
-        </Accordion>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
