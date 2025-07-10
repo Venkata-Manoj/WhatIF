@@ -55,30 +55,6 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="w-full py-16 md:py-24 lg:py-32">
-            <div className="container px-4 md:px-6">
-               <div className="grid gap-8 lg:grid-cols-2 lg:gap-16 items-center">
-                  <div className="space-y-4">
-                      <div className="inline-block rounded-lg bg-secondary px-3 py-1 text-sm">Why Vibe Learn AI?</div>
-                      <h2 className="font-headline text-3xl font-bold tracking-tighter sm:text-4xl">Everything You Need to Succeed</h2>
-                      <p className="max-w-[600px] text-muted-foreground md:text-lg">
-                          Our platform is packed with features designed to take you from prompt novice to expert, providing structured learning paths, hands-on practice, and AI-powered feedback.
-                      </p>
-                  </div>
-                   <div className="flex items-center justify-center">
-                      <Image
-                          src="https://placehold.co/600x400.png"
-                          width={600}
-                          height={400}
-                          alt="Abstract AI visualization"
-                          data-ai-hint="abstract network"
-                          className="overflow-hidden rounded-xl object-cover shadow-lg"
-                      />
-                      </div>
-               </div>
-            </div>
-        </section>
-
         <section id="features" className="w-full py-16 md:py-24 lg:py-32 bg-muted/50">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
