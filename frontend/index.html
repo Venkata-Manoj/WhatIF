@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What IF - Component Bug Prevention Tool</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">
+            <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h1 class="app-title">
+                    <i class="fas fa-shield-alt"></i>
+                    What IF
+                </h1>
+                <p class="app-subtitle">Bug Prevention Tool</p>
+            </div>
+
+            <nav class="sidebar-nav">
+                <button class="nav-item active" id="newPromptBtn">
+                    <i class="fas fa-plus"></i>
+                    <span>New Analysis</span>
+                </button>
+                <button class="nav-item" id="savedBtn">
+                    <i class="fas fa-bookmark"></i>
+                    <span>Saved Results</span>
+                </button>
+                <button class="nav-item" id="settingsBtn">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="version-info">
+                    <p>Version 1.0</p>
+                    <p>Made with ❤️ for developers</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="main-header">
+                <h2 class="page-title">Component Analysis</h2>
+                <p class="page-subtitle">Prevent bugs before they happen</p>
+            </header>
+
+            <!-- Input Section -->
+            <section class="input-section">
+                <div class="input-container">
+                    <div class="input-group">
+                        <input 
+                            type="text" 
+                            id="componentInput" 
+                            class="component-input" 
+                            placeholder="Enter a UI component like 'Login Page', 'Shopping Cart', 'Dashboard'..."
+                            autocomplete="off"
+                        >
+                        <button class="analyze-btn" id="analyzeBtn">
+                            <i class="fas fa-search"></i>
+                            <span>Run Analysis</span>
+                        </button>
+                    </div>
+                    <div class="input-suggestions">
+                        <span class="suggestion-label">Try these:</span>
+                        <button class="suggestion-chip" data-suggestion="Login Page">Login Page</button>
+                        <button class="suggestion-chip" data-suggestion="Shopping Cart">Shopping Cart</button>
+                        <button class="suggestion-chip" data-suggestion="Dashboard">Dashboard</button>
+                        <button class="suggestion-chip" data-suggestion="Checkout Form">Checkout Form</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading State -->
+            <div class="loading-container" id="loadingContainer" style="display: none;">
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                    <p class="loading-text">Analyzing component...</p>
+                    <p class="loading-subtext">Running 4-step analysis chain</p>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h3 class="results-title">Analysis Results</h3>
+                    <div class="results-actions">
+                        <button class="action-btn save-btn" id="saveBtn">
+                            <i class="fas fa-bookmark"></i>
+                            Save
+                        </button>
+                        <button class="action-btn export-btn" id="exportBtn">
+                            <i class="fas fa-file-pdf"></i>
+                            Export PDF
+                        </button>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Key Implementation Points -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-key card-icon"></i>
+                            <h4 class="card-title">Key Implementation Points</h4>
+                        </div>
+                        <div class="card-content">
+                            <ul class="result-list" id="keyPointsList">
+                                <!-- Dynamic content will be inserted here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- What-If Scenarios -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-question-circle card-icon"></i>
+                            <h4 class="card-title">What-If Scenarios</h4>
+                        </div>
+                        <div class="card-content">
+                            <ul class="result-list" id="whatIfsList">
+                                <!-- Dynamic content will be inserted here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Suggestions to Prevent Issues -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-lightbulb card-icon"></i>
+                            <h4 class="card-title">Prevention Strategies</h4>
+                        </div>
+                        <div class="card-content">
+                            <ul class="result-list" id="suggestionsList">
+                                <!-- Dynamic content will be inserted here -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Developer Checklist -->
+                    <div class="result-card">
+                        <div class="card-header">
+                            <i class="fas fa-check-square card-icon"></i>
+                            <h4 class="card-title">Developer Checklist</h4>
+                        </div>
+                        <div class="card-content">
+                            <ul class="result-list checklist" id="checklistList">
+                                <!-- Dynamic content will be inserted here -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Error State -->
+            <div class="error-container" id="errorContainer" style="display: none;">
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>Analysis Failed</h3>
+                    <p id="errorText">Something went wrong. Please try again.</p>
+                    <button class="retry-btn" id="retryBtn">Try Again</button>
+                </div>
+            </div>
+
+            <!-- Saved Results Modal -->
+            <div class="modal-overlay" id="savedModal" style="display: none;">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3>Saved Analyses</h3>
+                        <button class="modal-close" id="closeSavedModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-content">
+                        <div id="savedResultsList">
+                            <p class="empty-state">No saved analyses yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Modal -->
+            <div class="modal-overlay" id="settingsModal" style="display: none;">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3>Settings</h3>
+                        <button class="modal-close" id="closeSettingsModal">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="modal-content">
+                        <div class="setting-group">
+                            <label for="apiUrl">Backend API URL:</label>
+                            <input type="text" id="apiUrl" value="http://localhost:5001" class="setting-input">
+                        </div>
+                        <div class="setting-group">
+                            <label for="darkMode">
+                                <input type="checkbox" id="darkMode">
+                                Dark Mode
+                            </label>
+                        </div>
+                        <button class="save-settings-btn" id="saveSettingsBtn">Save Settings</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
