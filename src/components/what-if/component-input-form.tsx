@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useEffect, useRef, useState, DragEvent } from 'react';
@@ -25,6 +24,37 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { AnalysisHistory } from './analysis-history';
 import { Loader } from 'lucide-react';
+
+const exampleComponents = [
+  'Login Page',
+  'Data Grid',
+  'File Uploader',
+  'Shopping Cart',
+  'User Profile',
+  'Dashboard',
+  'Product Card',
+  'Checkout Form',
+  'Search Bar',
+  'Image Gallery',
+  'Navigation Menu',
+  'Contact Form',
+  'Date Picker',
+  'Slider Component',
+  'Accordion Menu',
+  'Toast Notification',
+  'Modal Dialog',
+  'Pricing Table',
+  'Registration Form',
+  'Password Strength',
+  'Settings Panel',
+  'Onboarding Flow',
+  'Chat Window',
+  'Video Player',
+  'Music Player',
+  'Calendar View',
+  'Kanban Board',
+  'WYSIWYG Editor'
+];
 
 interface FormState {
   status: 'idle' | 'success' | 'error';
@@ -217,34 +247,3 @@ export function ComponentInputForm() {
     </div>
   );
 }
-
-const exampleComponents = [
-  'Login Page',
-  'Data Grid',
-  'File Uploader',
-  'Shopping Cart',
-  'User Profile',
-  'Dashboard',
-  'Product Card',
-  'Checkout Form',
-  'Search Bar',
-  'Image Gallery',
-  'Navigation Menu',
-  'Contact Form',
-  'Date Picker',
-  'Slider Component',
-  'Accordion Menu',
-  'Toast Notification',
-  'Modal Dialog',
-  'Pricing Table',
-  'Registration Form',
-  'Password Strength',
-  'Settings Panel',
-  'Onboarding Flow',
-  'Chat Window',
-  'Video Player',
-  'Music Player',
-  'Calendar View',
-  'Kanban Board',
-  'WYSIWYG Editor'
-];
