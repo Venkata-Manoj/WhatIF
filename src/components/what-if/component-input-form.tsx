@@ -215,17 +215,19 @@ export function ComponentInputForm() {
                     {[...exampleComponents, ...exampleComponents].map((name, index) => (
                       <motion.div
                         key={`${name}-${index}`}
-                        draggable
-                        onClick={() => handleExampleClick(name)}
-                        onDragStart={(e: React.DragEvent<HTMLDivElement>) =>
-                          handleDragStart(e, name)
-                        }
-                        className="flex-shrink-0 px-4 py-2 text-sm rounded-full bg-secondary hover:bg-secondary/80 text-secondary-foreground cursor-grab active:cursor-grabbing shadow-md"
+                        className="flex-shrink-0 px-4 py-2 text-sm rounded-full bg-secondary hover:bg-secondary/80 text-secondary-foreground shadow-md"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
                         transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                       >
-                        {name}
+                        <div
+                          draggable
+                          onClick={() => handleExampleClick(name)}
+                          onDragStart={(e) => handleDragStart(e, name)}
+                          className="cursor-grab active:cursor-grabbing"
+                        >
+                          {name}
+                        </div>
                       </motion.div>
                     ))}
                   </div>
