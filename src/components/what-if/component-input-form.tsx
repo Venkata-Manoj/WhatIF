@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState, DragEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -53,7 +53,7 @@ const exampleComponents = [
   'Music Player',
   'Calendar View',
   'Kanban Board',
-  'WYSIWYG Editor'
+  'WYSIWYG Editor',
 ];
 
 interface FormState {
@@ -93,7 +93,6 @@ function SubmitButton() {
   );
 }
 
-
 export function ComponentInputForm() {
   const [state, formAction] = useActionState(analyzeComponentAction, initialState);
   const { toast } = useToast();
@@ -126,18 +125,18 @@ export function ComponentInputForm() {
       setSelectedAnalysis(state.data);
     }
   }, [state, toast]);
-  
+
   const handleExampleClick = (componentName: string) => {
     if (inputRef.current) {
       inputRef.current.value = componentName;
     }
   };
 
-  const handleDragStart = (e: DragEvent<HTMLDivElement>, componentName: string) => {
+  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, componentName: string) => {
     e.dataTransfer.setData('text/plain', componentName);
   };
-  
-  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const componentName = e.dataTransfer.getData('text/plain');
     if (inputRef.current) {
@@ -146,19 +145,19 @@ export function ComponentInputForm() {
     setIsDropZoneActive(false);
   };
 
-  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDropZoneActive(true);
   };
 
-  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDropZoneActive(false);
   };
 
   const handleSelectHistory = (analysis: AnalysisResult) => {
     setSelectedAnalysis(analysis);
-     if (inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.value = analysis.componentName;
     }
   };
@@ -177,9 +176,9 @@ export function ComponentInputForm() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  <div 
+                  <div
                     className={cn(
-                      "space-y-2 rounded-lg p-4 border-dashed border-2 border-transparent transition-all",
+                      'space-y-2 rounded-lg p-4 border-dashed border-2 border-transparent transition-all',
                       isDropZoneActive && 'border-accent bg-accent/10'
                     )}
                     onDrop={handleDrop}
@@ -194,7 +193,7 @@ export function ComponentInputForm() {
                       name="componentName"
                       ref={inputRef}
                       placeholder="e.g., 'User Profile Card' or drop an example here"
-                      className={cn("text-base py-6", isDropZoneActive && 'drop-zone-active')}
+                      className={cn('text-base py-6', isDropZoneActive && 'drop-zone-active')}
                       required
                     />
                     {state.errors?.componentName && (
@@ -207,8 +206,8 @@ export function ComponentInputForm() {
                   <SubmitButton />
                 </div>
               </CardContent>
-              <CardFooter className='flex flex-col items-start gap-4'>
-                <div className='text-sm text-muted-foreground'>
+              <CardFooter className="flex flex-col items-start gap-4">
+                <div className="text-sm text-muted-foreground">
                   <p>Or try one of these examples:</p>
                 </div>
                 <div className="relative w-full overflow-hidden group">
@@ -216,13 +215,15 @@ export function ComponentInputForm() {
                     {[...exampleComponents, ...exampleComponents].map((name, index) => (
                       <motion.div
                         key={`${name}-${index}`}
-                        draggable="true"
+                        draggable
                         onClick={() => handleExampleClick(name)}
-                        onDragStart={(e) => handleDragStart(e, name)}
+                        onDragStart={(e: React.DragEvent<HTMLDivElement>) =>
+                          handleDragStart(e, name)
+                        }
                         className="flex-shrink-0 px-4 py-2 text-sm rounded-full bg-secondary hover:bg-secondary/80 text-secondary-foreground cursor-grab active:cursor-grabbing shadow-md"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
+                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
                       >
                         {name}
                       </motion.div>
