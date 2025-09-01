@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { ThemeProvider } from 'next-themes';
 import { AuthProvider } from '@/hooks/use-auth';
+import { Footer } from '@/components/what-if/footer';
 
 export const metadata: Metadata = {
   title: 'WhatIF - AI-Powered Component Analysis',
@@ -35,6 +36,7 @@ export default function RootLayout({
               {children}
             </div>
             <Toaster />
+            <Footer />
           </AuthProvider>
         </ThemeProvider>
       </body>
