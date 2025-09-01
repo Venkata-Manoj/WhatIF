@@ -66,7 +66,7 @@ export async function analyzeComponentAction(
 
     const suggestionsResult = await generatePreventativeSuggestions({
       componentName,
-      identifiedRisks: risksResult.risks,
+      risks: risksResult.risks,
     });
 
     const checklistResult = await generateDeveloperChecklist({
@@ -74,14 +74,14 @@ export async function analyzeComponentAction(
       componentPurpose: analysis.purpose,
       componentUserFlows: analysis.userFlows,
       componentUIUXElements: analysis.coreUIUXElements,
-      identifiedRisks: risksResult.risks,
-      suggestedFixes: suggestionsResult.preventativeSuggestions,
+      identifiedRisks: JSON.stringify(risksResult.risks, null, 2),
+      suggestedFixes: JSON.stringify(suggestionsResult.suggestions, null, 2),
     });
 
     const resultData: AnalysisResult = {
       analysis,
       risks: risksResult.risks,
-      suggestions: suggestionsResult.preventativeSuggestions,
+      suggestions: suggestionsResult.suggestions,
       checklist: checklistResult.checklist,
       componentName,
     };
