@@ -9,15 +9,22 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
+import { IdentifyComponentRisksOutputSchema } from './identify-component-risks';
 
 const GeneratePreventativeSuggestionsInputSchema = z.object({
   componentName: z.string().describe('The name of the UI component.'),
-  identifiedRisks: z.string().describe('A description of the identified risks for the UI component.'),
+  risks: IdentifyComponentRisksOutputSchema.shape.risks.describe('A structured list of identified risks for the UI component.'),
 });
 export type GeneratePreventativeSuggestionsInput = z.infer<typeof GeneratePreventativeSuggestionsInputSchema>;
 
+const SuggestionSchema = z.object({
+  type: z.string().describe('The category of the suggestion (e.g., Functional, Usability, Accessibility).'),
+  cause: z.string().describe('The specific cause or scenario this suggestion is addressing.'),
+  remedy: z.string().describe('The detailed suggestion or fix, including code examples if applicable.'),
+});
+
 const GeneratePreventativeSuggestionsOutputSchema = z.object({
-  preventativeSuggestions: z.string().describe('A list of preventative strategies and fixes, with each item on a new line and starting with a bullet point.'),
+  suggestions: z.array(SuggestionSchema).describe('A structured list of preventative suggestions and fixes.'),
 });
 export type GeneratePreventativeSuggestionsOutput = z.infer<typeof GeneratePreventativeSuggestionsOutputSchema>;
 
@@ -29,20 +36,22 @@ const prompt = ai.definePrompt({
   name: 'generatePreventativeSuggestionsPrompt',
   input: {schema: GeneratePreventativeSuggestionsInputSchema},
   output: {schema: GeneratePreventativeSuggestionsOutputSchema},
-  prompt: `You are an AI assistant helping developers identify preventative strategies and fixes for potential issues in UI components.
+  prompt: `You are an AI assistant helping developers create preventative strategies and fixes for potential issues in UI components.
 
-  Based on the identified risks for the component {{componentName}}:
-  {{identifiedRisks}}
+  Based on the identified risks for the component '{{componentName}}', generate a list of preventative suggestions.
+  The identified risks are provided as a structured JSON object. For each risk, provide a corresponding suggestion.
 
-  Generate a list of preventative suggestions and fixes to address these risks.
-  Each suggestion should be on a new line and start with a bullet point (-).
-  Provide clear, actionable advice that a developer can implement to avoid the identified issues.
-  The suggestions should be comprehensive and cover various aspects of the component's functionality and usability.
-  Focus on practical solutions that can be easily integrated into the development process.
+  Identified Risks:
+  {{json risks}}
+
+  Generate a structured list of preventative suggestions and fixes to address these risks.
+  For each suggestion, provide the following fields:
+  - 'type': The category of the suggestion (e.g., Functional, Usability, Security, Accessibility). This should match the risk type.
+  - 'cause': The specific cause or scenario this suggestion is addressing. This should match the risk cause.
+  - 'remedy': A clear, actionable piece of advice that a developer can implement. Include code examples where helpful.
+
   The advice should be tailored to the specific component and its potential risks, ensuring that the developer receives the most relevant and effective guidance.
-  Do not make assumptions, but rely only on information provided in the prompt.
-  Do not include introductory or concluding remarks.
-  Do not use any markdown formatting like bolding or headers. The response should be plain text.
+  Ensure your output is a valid JSON object adhering to the specified schema.
   `,
 });
 
