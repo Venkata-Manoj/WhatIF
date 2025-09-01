@@ -18,7 +18,7 @@ import { formatDistanceToNow } from 'date-fns';
 
 interface AnalysisHistoryProps {
   onSelect: (analysis: AnalysisResult) => void;
-  newResult: AnalysisResult | null | undefined;
+  newResult?: AnalysisResult | null;
 }
 
 export function AnalysisHistory({ onSelect, newResult }: AnalysisHistoryProps) {
