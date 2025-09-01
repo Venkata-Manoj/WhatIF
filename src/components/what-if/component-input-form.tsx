@@ -1,9 +1,7 @@
-
 'use client';
 
 import { useEffect, useRef, useState, DragEvent } from 'react';
-import { useActionState } from 'react';
-import { useFormStatus } from 'react-dom';
+import { useActionState, useFormStatus } from 'react-dom';  // ✅ FIXED
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/use-auth';
 import { analyzeComponentAction } from '@/app/actions';
@@ -64,7 +62,7 @@ function SubmitButton() {
 }
 
 export function ComponentInputForm() {
-  const [state, formAction] = useActionState(analyzeComponentAction, initialState);
+  const [state, formAction] = useActionState(analyzeComponentAction, initialState); // ✅ FIXED
   const { toast } = useToast();
   const { user } = useAuth();
   const formRef = useRef<HTMLFormElement>(null);
@@ -126,7 +124,7 @@ export function ComponentInputForm() {
 
   const handleSelectHistory = (analysis: AnalysisResult) => {
     setSelectedAnalysis(analysis);
-     if (inputRef.current) {
+    if (inputRef.current) {
       inputRef.current.value = analysis.componentName;
     }
   };
