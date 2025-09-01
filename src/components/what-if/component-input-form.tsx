@@ -1,171 +1,106 @@
 'use client';
 
 import { useEffect, useRef, useState, DragEvent } from 'react';
-import { useActionState, useFormStatus } from 'react';   // ✅ fixed imports
+import { useActionState } from 'react'; // ✅ only useActionState comes from react
+import { useFormStatus } from 'react-dom'; // ✅ useFormStatus comes from react-dom
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/hooks/use-auth';
 import { analyzeComponentAction } from '@/app/actions';
-import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-  CardFooter,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { AnalysisDisplay } from './analysis-display';
 import { LoadingSpinner } from './loading-spinner';
 import type { AnalysisResult } from '@/lib/types';
-import { cn } from '@/lib/utils';
-import { motion } from 'framer-motion';
-import { AnalysisHistory } from './analysis-history';
-import { Loader } from 'lucide-react';
 
-interface ComponentInputFormProps {
+export function ComponentInputForm({
+  onAnalysisComplete,
+}: {
   onAnalysisComplete: (result: AnalysisResult) => void;
-}
-
-export function ComponentInputForm({ onAnalysisComplete }: ComponentInputFormProps) {
+}) {
   const { toast } = useToast();
   const { user } = useAuth();
-  const [input, setInput] = useState('');
-  const [analysis, setAnalysis] = useState<AnalysisResult | null>(null);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  const examples = [
-    'Button Component',
-    'Modal Dialog',
-    'Authentication Form',
-    'Navigation Bar',
-    'Product Card',
-  ];
+  const [state, formAction, pending] = useActionState(analyzeComponentAction, {
+    success: false,
+    error: undefined,
+    data: undefined,
+  });
 
-  const handleExampleClick = (example: string) => {
-    setInput(example);
-    inputRef.current?.focus();
-  };
+  const [inputValue, setInputValue] = useState('');
+  const [dragOver, setDragOver] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
 
-  const handleDragStart = (e: DragEvent<HTMLDivElement>, name: string) => {
-    e.dataTransfer.setData('text/plain', name);
-  };
-
-  const handleSubmit = async (formData: FormData) => {
-    if (!user) {
-      toast({
-        title: 'Authentication required',
-        description: 'Please sign in to analyze components',
-        variant: 'destructive',
-      });
-      return;
-    }
-
-    setIsAnalyzing(true);
-    try {
-      const result = await analyzeComponentAction(formData);
-      if (result?.error) {
-        toast({
-          title: 'Analysis failed',
-          description: result.error,
-          variant: 'destructive',
-        });
-        return;
-      }
-
-      if (result) {
-        setAnalysis(result);
-        onAnalysisComplete(result);
-      }
-    } catch {
+  // ✅ notify parent when analysis completes
+  useEffect(() => {
+    if (state.success && state.data) {
+      onAnalysisComplete(state.data);
+    } else if (state.error) {
       toast({
         title: 'Error',
-        description: 'Failed to analyze component. Please try again.',
+        description: state.error,
         variant: 'destructive',
       });
-    } finally {
-      setIsAnalyzing(false);
     }
+  }, [state, onAnalysisComplete, toast]);
+
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    const text = e.dataTransfer.getData('text/plain');
+    if (text) setInputValue(text);
   };
 
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(true);
+  };
+
+  const handleDragLeave = () => setDragOver(false);
+
+  if (!user) {
+    return (
+      <div className="p-4 text-center text-gray-500">
+        Please log in to analyze components.
+      </div>
+    );
+  }
+
   return (
-    <Card className="w-full max-w-2xl">
-      <CardHeader>
-        <CardTitle>Analyze Your Component</CardTitle>
-        <CardDescription>
-          Enter the name or paste the code of your UI component to receive an instant analysis.
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form action={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="component">Component</Label>
-            <Input
-              id="component"
-              name="component"
-              ref={inputRef}
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              placeholder="e.g., Button Component or paste code here"
-              required
-            />
-          </div>
+    <form
+      ref={formRef}
+      action={formAction}
+      className="flex flex-col space-y-4"
+    >
+      <div
+        className={`border-2 border-dashed rounded-lg p-6 transition ${
+          dragOver ? 'border-blue-500 bg-blue-50' : 'border-gray-300'
+        }`}
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+      >
+        <textarea
+          name="componentCode"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          placeholder="Paste or drag your component code here..."
+          className="w-full h-40 p-2 border rounded-md font-mono text-sm"
+          required
+        />
+      </div>
 
-          <div className="flex flex-wrap gap-2">
-            {examples.map((name, index) => (
-              <motion.div
-                key={index}
-                className="flex-shrink-0 rounded-md bg-muted px-3 py-1 text-sm cursor-pointer"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <div
-                  draggable
-                  onClick={() => handleExampleClick(name)}
-                  onDragStart={(e) => handleDragStart(e, name)}
-                >
-                  {name}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          <CardFooter className="px-0">
-            <SubmitButton isAnalyzing={isAnalyzing} />
-          </CardFooter>
-        </form>
-      </CardContent>
-
-      {analysis && (
-        <CardContent>
-          <AnalysisDisplay result={analysis} />
-        </CardContent>
-      )}
-
-      {user && (
-        <CardContent>
-          <AnalysisHistory />
-        </CardContent>
-      )}
-    </Card>
+      <SubmitButton pending={pending} />
+    </form>
   );
 }
 
-function SubmitButton({ isAnalyzing }: { isAnalyzing: boolean }) {
-  const { pending } = useFormStatus();
+function SubmitButton({ pending }: { pending: boolean }) {
+  const { pending: formPending } = useFormStatus(); // ✅ correct usage
 
   return (
-    <Button type="submit" disabled={pending || isAnalyzing}>
-      {pending || isAnalyzing ? (
-        <>
-          <Loader className="mr-2 h-4 w-4 animate-spin" />
-          Analyzing...
-        </>
-      ) : (
-        'Analyze Component'
-      )}
-    </Button>
+    <button
+      type="submit"
+      className="px-4 py-2 rounded-md bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+      disabled={pending || formPending}
+    >
+      {pending || formPending ? <LoadingSpinner /> : 'Analyze Component'}
+    </button>
   );
 }
