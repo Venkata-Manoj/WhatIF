@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, DragEvent } from 'react';
 import { useActionState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { useToast } from '@/hooks/use-toast';
@@ -24,37 +25,6 @@ import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
 import { AnalysisHistory } from './analysis-history';
 import { Loader } from 'lucide-react';
-
-const exampleComponents = [
-  'Login Page',
-  'Data Grid',
-  'File Uploader',
-  'Shopping Cart',
-  'User Profile',
-  'Dashboard',
-  'Product Card',
-  'Checkout Form',
-  'Search Bar',
-  'Image Gallery',
-  'Navigation Menu',
-  'Contact Form',
-  'Date Picker',
-  'Slider Component',
-  'Accordion Menu',
-  'Toast Notification',
-  'Modal Dialog',
-  'Pricing Table',
-  'Registration Form',
-  'Password Strength',
-  'Settings Panel',
-  'Onboarding Flow',
-  'Chat Window',
-  'Video Player',
-  'Music Player',
-  'Calendar View',
-  'Kanban Board',
-  'WYSIWYG Editor',
-];
 
 interface FormState {
   status: 'idle' | 'success' | 'error';
@@ -102,7 +72,6 @@ export function ComponentInputForm() {
   const [isDropZoneActive, setIsDropZoneActive] = useState(false);
   const [idToken, setIdToken] = useState<string | null>(null);
   const [selectedAnalysis, setSelectedAnalysis] = useState<AnalysisResult | null>(null);
-
   const { pending } = useFormStatus();
 
   useEffect(() => {
@@ -125,18 +94,18 @@ export function ComponentInputForm() {
       setSelectedAnalysis(state.data);
     }
   }, [state, toast]);
-
+  
   const handleExampleClick = (componentName: string) => {
     if (inputRef.current) {
       inputRef.current.value = componentName;
     }
   };
 
-  const handleDragStart = (e: React.DragEvent<HTMLDivElement>, componentName: string) => {
+  const handleDragStart = (e: DragEvent<HTMLDivElement>, componentName: string) => {
     e.dataTransfer.setData('text/plain', componentName);
   };
-
-  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+  
+  const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     const componentName = e.dataTransfer.getData('text/plain');
     if (inputRef.current) {
@@ -145,19 +114,19 @@ export function ComponentInputForm() {
     setIsDropZoneActive(false);
   };
 
-  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDropZoneActive(true);
   };
 
-  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+  const handleDragLeave = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDropZoneActive(false);
   };
 
   const handleSelectHistory = (analysis: AnalysisResult) => {
     setSelectedAnalysis(analysis);
-    if (inputRef.current) {
+     if (inputRef.current) {
       inputRef.current.value = analysis.componentName;
     }
   };
@@ -176,9 +145,9 @@ export function ComponentInputForm() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-6">
-                  <div
+                  <div 
                     className={cn(
-                      'space-y-2 rounded-lg p-4 border-dashed border-2 border-transparent transition-all',
+                      "space-y-2 rounded-lg p-4 border-dashed border-2 border-transparent transition-all",
                       isDropZoneActive && 'border-accent bg-accent/10'
                     )}
                     onDrop={handleDrop}
@@ -193,7 +162,7 @@ export function ComponentInputForm() {
                       name="componentName"
                       ref={inputRef}
                       placeholder="e.g., 'User Profile Card' or drop an example here"
-                      className={cn('text-base py-6', isDropZoneActive && 'drop-zone-active')}
+                      className={cn("text-base py-6", isDropZoneActive && 'drop-zone-active')}
                       required
                     />
                     {state.errors?.componentName && (
@@ -206,8 +175,8 @@ export function ComponentInputForm() {
                   <SubmitButton />
                 </div>
               </CardContent>
-              <CardFooter className="flex flex-col items-start gap-4">
-                <div className="text-sm text-muted-foreground">
+              <CardFooter className='flex flex-col items-start gap-4'>
+                <div className='text-sm text-muted-foreground'>
                   <p>Or try one of these examples:</p>
                 </div>
                 <div className="relative w-full overflow-hidden group">
@@ -215,19 +184,15 @@ export function ComponentInputForm() {
                     {[...exampleComponents, ...exampleComponents].map((name, index) => (
                       <motion.div
                         key={`${name}-${index}`}
-                        className="flex-shrink-0 px-4 py-2 text-sm rounded-full bg-secondary hover:bg-secondary/80 text-secondary-foreground shadow-md"
+                        draggable="true"
+                        onClick={() => handleExampleClick(name)}
+                        onDragStart={(e) => handleDragStart(e, name)}
+                        className="flex-shrink-0 px-4 py-2 text-sm rounded-full bg-secondary hover:bg-secondary/80 text-secondary-foreground cursor-grab active:cursor-grabbing shadow-md"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
-                        transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                        transition={{ type: "spring", stiffness: 400, damping: 17 }}
                       >
-                        <div
-                          draggable
-                          onClick={() => handleExampleClick(name)}
-                          onDragStart={(e) => handleDragStart(e, name)}
-                          className="cursor-grab active:cursor-grabbing"
-                        >
-                          {name}
-                        </div>
+                        {name}
                       </motion.div>
                     ))}
                   </div>
@@ -250,3 +215,34 @@ export function ComponentInputForm() {
     </div>
   );
 }
+
+const exampleComponents = [
+  'Login Page',
+  'Data Grid',
+  'File Uploader',
+  'Shopping Cart',
+  'User Profile',
+  'Dashboard',
+  'Product Card',
+  'Checkout Form',
+  'Search Bar',
+  'Image Gallery',
+  'Navigation Menu',
+  'Contact Form',
+  'Date Picker',
+  'Slider Component',
+  'Accordion Menu',
+  'Toast Notification',
+  'Modal Dialog',
+  'Pricing Table',
+  'Registration Form',
+  'Password Strength',
+  'Settings Panel',
+  'Onboarding Flow',
+  'Chat Window',
+  'Video Player',
+  'Music Player',
+  'Calendar View',
+  'Kanban Board',
+  'WYSIWYG Editor'
+];
