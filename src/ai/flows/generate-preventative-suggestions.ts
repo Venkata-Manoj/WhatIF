@@ -9,7 +9,7 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { IdentifyComponentRisksOutputSchema } from './identify-component-risks';
+import { IdentifyComponentRisksOutputSchema } from '@/lib/types';
 
 const GeneratePreventativeSuggestionsInputSchema = z.object({
   componentName: z.string().describe('The name of the UI component.'),
