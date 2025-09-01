@@ -3,9 +3,29 @@ import type { AnalysisResult } from '@/lib/types';
 import { AnalysisCard } from './analysis-card';
 import { Separator } from '@/components/ui/separator';
 import { MermaidChart } from './mermaid-chart';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+import { Badge } from '@/components/ui/badge';
+
 
 export function AnalysisDisplay({ result }: { result: AnalysisResult }) {
   const { analysis, risks, suggestions, checklist } = result;
+
+  const getSeverityVariant = (severity: 'Low' | 'Medium' | 'High') => {
+    switch (severity) {
+      case 'High':
+        return 'destructive';
+      case 'Medium':
+        return 'secondary';
+      default:
+        return 'outline';
+    }
+  };
+
 
   return (
     <div className="space-y-8">
@@ -24,6 +44,11 @@ export function AnalysisDisplay({ result }: { result: AnalysisResult }) {
               <h3 className="font-semibold text-lg mb-1">Core UI/UX Elements</h3>
               <p className="whitespace-pre-wrap">{analysis.coreUIUXElements}</p>
             </div>
+             <Separator />
+            <div>
+              <h3 className="font-semibold text-lg mb-1">User Flows</h3>
+              <p className="whitespace-pre-wrap">{analysis.userFlows}</p>
+            </div>
           </div>
         </AnalysisCard>
 
@@ -33,18 +58,35 @@ export function AnalysisDisplay({ result }: { result: AnalysisResult }) {
       </div>
 
        <div className="grid gap-8">
-        <AnalysisCard title="User Flows" icon={Lightbulb}>
-          <p className="whitespace-pre-wrap">{analysis.userFlows}</p>
-        </AnalysisCard>
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-8">
-        <AnalysisCard title="What-If Scenarios" icon={ShieldAlert}>
-          <p className="whitespace-pre-wrap">{risks}</p>
-        </AnalysisCard>
-
-        <AnalysisCard title="Preventative Suggestions" icon={Wrench}>
-          <p className="whitespace-pre-wrap">{suggestions}</p>
+        <AnalysisCard title="What-If Scenarios & Suggestions" icon={ShieldAlert}>
+            <Accordion type="single" collapsible className="w-full" defaultValue='item-0'>
+                {risks.map((risk, index) => {
+                    const suggestion = suggestions.find(s => s.cause === risk.cause);
+                    return (
+                        <AccordionItem value={`item-${index}`} key={index}>
+                            <AccordionTrigger>
+                                <div className='flex items-center gap-4 text-left'>
+                                    <Badge variant={getSeverityVariant(risk.severity)}>{risk.severity}</Badge>
+                                    <div className='flex flex-col'>
+                                        <span className='font-semibold'>{risk.type}</span>
+                                        <span className='text-sm text-muted-foreground'>{risk.cause}</span>
+                                    </div>
+                                </div>
+                            </AccordionTrigger>
+                            <AccordionContent>
+                                {suggestion ? (
+                                    <div className='prose prose-sm dark:prose-invert max-w-none'>
+                                      <h4 className='font-semibold flex items-center gap-2'><Wrench className='w-4 h-4 text-primary' />Remedy</h4>
+                                      <p className='whitespace-pre-wrap'>{suggestion.remedy}</p>
+                                    </div>
+                                ) : (
+                                    <p>No specific remedy provided for this risk.</p>
+                                )}
+                            </AccordionContent>
+                        </AccordionItem>
+                    )
+                })}
+            </Accordion>
         </AnalysisCard>
       </div>
 
