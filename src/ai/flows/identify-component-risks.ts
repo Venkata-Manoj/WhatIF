@@ -9,14 +9,22 @@
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
-import { IdentifyComponentRisksOutputSchema } from '@/lib/types';
-
 
 const IdentifyComponentRisksInputSchema = z.object({
   componentName: z.string().describe('The name of the UI component to analyze.'),
   componentDescription: z.string().describe('A detailed description of the UI component, including its purpose, user flows, and core UI/UX elements.'),
 });
 export type IdentifyComponentRisksInput = z.infer<typeof IdentifyComponentRisksInputSchema>;
+
+const RiskSchema = z.object({
+    type: z.string().describe("The category of the risk (e.g., Functional, Usability, Security, Accessibility)."),
+    cause: z.string().describe("A brief description of what could cause this risk."),
+    severity: z.enum(["High", "Medium", "Low"]).describe("The severity level of the risk."),
+});
+
+export const IdentifyComponentRisksOutputSchema = z.object({
+  risks: z.array(RiskSchema).describe('A structured list of potential risks associated with the UI component.'),
+});
 export type IdentifyComponentRisksOutput = z.infer<typeof IdentifyComponentRisksOutputSchema>;
 
 export async function identifyComponentRisks(input: IdentifyComponentRisksInput): Promise<IdentifyComponentRisksOutput> {
