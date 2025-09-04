@@ -1,3 +1,5 @@
+"use client";
+
 import { AppHeader } from '@/components/what-if/app-header';
 import { ComponentInputForm } from '@/components/what-if/component-input-form';
 import { useState } from 'react';
