@@ -9,11 +9,14 @@ import { analyzeComponentAction } from '@/app/actions';
 import { LoadingSpinner } from './loading-spinner';
 import type { AnalysisResult } from '@/lib/types';
 
+// Define props type explicitly
+export interface ComponentInputFormProps {
+  onAnalysisComplete: (result: AnalysisResult) => void;
+}
+
 export function ComponentInputForm({
   onAnalysisComplete,
-}: {
-  onAnalysisComplete: (result: AnalysisResult) => void;
-}) {
+}: ComponentInputFormProps) {
   const { toast } = useToast();
   const { user } = useAuth();
 
