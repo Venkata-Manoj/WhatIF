@@ -11,19 +11,27 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "1rem",
       screens: {
         "2xl": "1400px",
       },
     },
+    screens: {
+      'mobileSmall': '320px',
+      'mobileMedium': '375px',
+      'mobileLarge': '414px',
+      'tablet': '768px',
+      'desktop': '1024px',
+      '2xl': '1400px'
+    },
     extend: {
       fontSize: {
-        base: ['1.05rem', '1.6'],
+        base: ['1rem', '1.6'],
       },
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Inter', 'sans-serif'],
-        code: ['monospace'],
+        body: ['Inter', 'Roboto', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        headline: ['Source Sans Pro', 'Segoe UI', 'Open Sans', 'sans-serif'],
+        code: ['Fira Code', 'JetBrains Mono', 'Courier New', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',
@@ -68,9 +76,9 @@ export default {
         },
       },
       borderRadius: {
-        lg: 'var(--radius)',
-        md: 'calc(var(--radius) - 2px)',
-        sm: 'calc(var(--radius) - 4px)',
+        lg: '20px',
+        md: '12px',
+        sm: '6px',
       },
       keyframes: {
         'accordion-down': {
