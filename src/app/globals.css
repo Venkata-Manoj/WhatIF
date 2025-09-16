@@ -1,0 +1,135 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 95%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 210 60% 50%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 180 50% 50%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 210 60% 50%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 210 20% 5%;
+    --foreground: 210 40% 98%;
+    --card: 210 20% 7%;
+    --card-foreground: 210 40% 98%;
+    --popover: 210 20% 5%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 60% 50%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 180 50% 50%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 210 60% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+  .drop-zone-active {
+    @apply ring-2 ring-primary ring-offset-2 ring-offset-background transition-all;
+  }
+
+  .animated-border-box {
+      @apply relative rounded-lg p-[2px] overflow-hidden;
+      background: hsl(var(--card));
+  }
+  .animated-border-box::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150%;
+      padding-bottom: 150%;
+      border-radius: inherit;
+      background: conic-gradient(
+        from var(--angle),
+        transparent 0%,
+        transparent 60%,
+        hsl(180 50% 50% / 0.8), 
+        hsl(210 60% 50% / 1),
+        hsl(260 80% 60% / 0.8),
+        transparent 90%,
+        transparent 100%
+      );
+      filter: blur(2px);
+      animation: spin 6s linear infinite;
+      --angle: 0deg;
+  }
+  .animated-border-box > * {
+      @apply relative z-10 rounded-[calc(var(--radius)-2px)] overflow-hidden;
+  }
+}
+
+@keyframes spin {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
+}
+
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-area, #printable-area * {
+    visibility: visible;
+  }
+  #printable-area {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 2rem;
+  }
+  .no-print {
+    display: none;
+  }
+}
+
+
+    
